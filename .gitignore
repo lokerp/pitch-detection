@@ -1,0 +1,36 @@
+# Compiled files
+target/
+www/pkg/
+
+# IDE files
+.vscode/
+.codeassistant/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment files
+.env
+
+# Temporary files
+*.tmp
+*.temp
+
+# Node modules (if using npm in www directory)
+www/node_modules/
+
+# Webpack build output (if applicable)
+www/dist/
+www/build/
+
+# Cargo lock file (optional - uncomment if you want to ignore it)
+# Cargo.lock

@@ -1,10 +1,7 @@
-# Compiled files
-target/
-www/pkg/
-
 # IDE files
 .vscode/
 .codeassistant/
+.codeassistantignore
 
 # OS generated files
 .DS_Store
@@ -26,11 +23,8 @@ Thumbs.db
 *.temp
 
 # Node modules (if using npm in www directory)
-www/node_modules/
+node_modules/
 
 # Webpack build output (if applicable)
-www/dist/
-www/build/
-
-# Cargo lock file (optional - uncomment if you want to ignore it)
-# Cargo.lock
+dist/
+build/

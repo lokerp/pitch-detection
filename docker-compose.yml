@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # === BACKEND ===
+  backend:
+    build: ./backend
+    # Пробрасываем код внутрь, чтобы cargo-watch видел изменения
+    volumes:
+      - ./backend:/app
+      # Важный хак: папка target должна быть "анонимным томом", 
+      # чтобы артефакты компиляции хранились внутри линукса контейнера, 
+      # а не на Windows (иначе будет очень медленно и ошибки прав)
+      - /app/target
+
+  # === FRONTEND (DEV SERVER) ===
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules # Preserve container dependencies
+    depends_on:
+      - backend
+
+  # === NGINX (GATEWAY) ===
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "${PORT_EXTERNAL}:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - frontend
+      - backend

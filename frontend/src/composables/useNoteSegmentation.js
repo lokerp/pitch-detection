@@ -145,6 +145,7 @@ export function useNoteSegmentation() {
 
     return {
         segments,
+        fullPitchHistory,
         addHistoryPoint,
         clearHistory
     };

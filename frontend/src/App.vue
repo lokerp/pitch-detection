@@ -5,7 +5,7 @@ import { useNoteSegmentation } from './composables/useNoteSegmentation';
 import PianoRoll from './components/PianoRoll.vue';
 import PitchVisualizer from './components/PitchVisualizer.vue';
 
-const { segments, addHistoryPoint } = useNoteSegmentation();
+const { segments, fullPitchHistory, addHistoryPoint } = useNoteSegmentation();
 
 const viewStartTime = ref(Date.now() - 5000);
 const viewEndTime = ref(Date.now());
@@ -65,6 +65,7 @@ function toggleAudio() {
         <!-- Piano Roll Area -->
         <div class="flex-1 p-4 relative min-h-[400px]">
             <PianoRoll 
+                :pitchData="fullPitchHistory" 
                 :notes="segments" 
                 :viewStartTime="viewStartTime" 
                 :viewEndTime="viewEndTime"

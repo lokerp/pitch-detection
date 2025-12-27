@@ -17,4 +17,4 @@ COPY . .
 
 # Запускаем в режиме наблюдения:
 # -x run: при изменении запускает "cargo run"
-CMD ["cargo", "watch", "-x", "run"]
+CMD ["cargo", "watch", "--poll", "-x", "run"]

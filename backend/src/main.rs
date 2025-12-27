@@ -16,14 +16,21 @@ struct SignalMessage {
 
 async fn on_join(socket: SocketRef, Data(room): Data<String>) {
     info!("Socket {} joined room {}", socket.id, room);
-    let _ = socket.join(room.clone());
-    // Уведомляем других в комнате
-    let _ = socket.to(room).emit("user_joined", &socket.id);
+    socket.join(room.clone());
+
+    if let Err(e) = socket
+        .to(room.clone())
+        .emit("user_joined", &socket.id)
+        .await
+    {
+        tracing::error!("Failed to emit user_joined to room {}: {:?}", room, e);
+    }
 }
 
 async fn on_signal(socket: SocketRef, Data(data): Data<SignalMessage>) {
-    // Отправляем всем в комнате, кроме отправителя
-    let _ = socket.to(data.room.clone()).emit("signal", &data);
+    if let Err(e) = socket.to(data.room.clone()).emit("signal", &data).await {
+        tracing::error!("Failed to emit signal to room {}: {:?}", data.room, e);
+    }
 }
 
 async fn on_disconnect(socket: SocketRef) {
@@ -33,12 +40,8 @@ async fn on_disconnect(socket: SocketRef) {
 async fn on_connect(socket: SocketRef, Data(_data): Data<Value>) {
     info!(ns = socket.ns(), ?socket.id, "Socket.IO connected");
 
-    // Обработка события "join"
     socket.on("join", on_join);
-
-    // Обработка события "signal" (SDP, ICE)
     socket.on("signal", on_signal);
-
     socket.on_disconnect(on_disconnect);
 }
 

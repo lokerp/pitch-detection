@@ -1,37 +1,45 @@
 # Karaoke Pitch Detector
 
-Проект детектора высоты тона (караоке) с разделением на backend (Rust + Axum) и frontend (Vue 3 + Vite).
+Pitch detection project (karaoke) separated into backend (Rust + Axum) and frontend (Vue 3 + Vite).
 
-## Запуск проекта
+## Project Setup
 
-Проект полностью докеризирован. Для запуска используйте Docker Compose.
+The project is fully dockerized. Use Docker Compose to run it.
 
-### Первый запуск / После изменения зависимостей
+### First Run / After Dependency Changes
 
-Если вы изменили `package.json` или `Cargo.toml`, или запускаете проект в первый раз, используйте флаг `-V` (пересоздание томов) и `--build`:
+If you modified `package.json` or `Cargo.toml`, or if you are running the project for the first time, use the `-V` flag (recreate volumes) and `--build`:
 
 ```bash
 docker-compose up --build -V
 ```
 
-### Обычный запуск
+### Regular Run
 
-Для простого перезапуска (без обновления зависимостей):
+For a simple restart (without updating dependencies):
 
 ```bash
 docker-compose up
 ```
 
-## Разработка
+### Remote Access (Cloudflare Tunnel)
 
-*   **Frontend**: Доступен по адресу [http://localhost:8080](http://localhost:8080).
-    *   Работает Hot Reload (изменения в папке `frontend` сразу видны в браузере).
-*   **Backend**: API доступен внутри сети Docker (проксируется Nginx).
-    *   Работает `cargo-watch` (изменения в папке `backend` вызывают перекомпиляцию).
+To forward ports using Cloudflare Quick Tunnel:
 
-## Структура
+```bash
+cloudflared tunnel --url http://localhost:8080
+```
 
-*   `backend/` - Серверная часть на Rust.
-*   `frontend/` - Клиентская часть на Vue 3.
-*   `nginx.conf` - Конфигурация Nginx (Gateway).
-*   `docker-compose.yml` - Описание сервисов.
+## Development
+
+*   **Frontend**: Available at [http://localhost:8080](http://localhost:8080).
+    *   Hot Reload is enabled (changes in the `frontend` folder are immediately visible in the browser).
+*   **Backend**: API is available within the Docker network (proxied by Nginx).
+    *   `cargo-watch` is enabled (changes in the `backend` folder trigger recompilation).
+
+## Structure
+
+*   `backend/` - Server-side code in Rust.
+*   `frontend/` - Client-side code in Vue 3.
+*   `nginx.conf` - Nginx configuration (Gateway).
+*   `docker-compose.yml` - Service definitions.
